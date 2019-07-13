@@ -8,6 +8,7 @@ import android.util.Log;
 
 import de.irt.dabaudiodecoderplugininterface.IDabPluginCallback;
 import de.irt.dabaudiodecoderplugininterface.IDabPluginInterface;
+import de.irt.dabmpg123decoderplugin.BuildConfig;
 
 public class Mpg123Decoder extends Service {
 
