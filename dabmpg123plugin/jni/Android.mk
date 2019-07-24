@@ -229,5 +229,6 @@ LOCAL_MODULE    := mpg123plug
 LOCAL_SRC_FILES := mpg123-jni.cpp
 LOCAL_SHARED_LIBRARIES := libmpg123
 //LOCAL_CFLAGS += -O3
+LOCAL_LDFLAGS += -Wl,--hash-style=both
 LOCAL_LDLIBS := -llog
 include $(BUILD_SHARED_LIBRARY) 
