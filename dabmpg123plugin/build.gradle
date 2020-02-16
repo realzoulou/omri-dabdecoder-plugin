@@ -42,9 +42,24 @@ android {
     tasks.withType(JavaCompile) {
         compileTask -> compileTask.dependsOn ndkBuild
     }
+
+    task cleanNdkBuildObj() {
+        doLast {
+            delete(file("$projectDir").absolutePath + '/obj')
+        }
+    }
+    task cleanNdkBuildLibs() {
+        doLast {
+            delete(file("$projectDir").absolutePath + '/libs')
+        }
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(path: ':dabaudiodecoderplugininterface')
 }
+
+clean.dependsOn cleanNdkBuildObj
+clean.dependsOn cleanNdkBuildLibs
