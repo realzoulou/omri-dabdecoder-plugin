@@ -27,7 +27,7 @@
 /* #undef DEBUG */
 
 /* The default audio output module(s) to use */
-#define DEFAULT_OUTPUT_MODULE "oss,esd,pulse"
+#define DEFAULT_OUTPUT_MODULE "oss"
 
 /* Define if building with dynamcally linked libmpg123 */
 #define DYNAMIC_BUILD 1
@@ -36,7 +36,7 @@
 /* #undef EOVERFLOW */
 
 /* Define if FIFO support is enabled. */
-/* #undef FIFO */
+#define FIFO 1
 
 /* Define if frame index should be used. */
 #define FRAME_INDEX 1
@@ -105,7 +105,7 @@
 #define HAVE_GETADDRINFO 1
 
 /* Define to 1 if you have the `getpagesize' function. */
-/* #undef HAVE_GETPAGESIZE */
+#define HAVE_GETPAGESIZE 1
 
 /* Define to 1 if you have the `getuid' function. */
 #define HAVE_GETUID 1
@@ -114,7 +114,7 @@
 #define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the <langinfo.h> header file. */
-/* #undef HAVE_LANGINFO_H */
+#define HAVE_LANGINFO_H 1
 
 /* Define to 1 if you have the `m' library (-lm). */
 #define HAVE_LIBM 1
@@ -138,7 +138,7 @@
 #define HAVE_MEMORY_H 1
 
 /* Define to 1 if you have the `mkfifo' function. */
-/* #undef HAVE_MKFIFO */
+#define HAVE_MKFIFO 1
 
 /* Define to 1 if you have a working `mmap' system call. */
 /* #undef HAVE_MMAP */
@@ -153,7 +153,7 @@
 /* #undef HAVE_NETINET_TCP_H */
 
 /* Define to 1 if you have the `nl_langinfo' function. */
-/* #undef HAVE_NL_LANGINFO */
+#define HAVE_NL_LANGINFO 1
 
 /* Define to 1 if you have the <OpenAL/alc.h> header file. */
 /* #undef HAVE_OPENAL_ALC_H */
@@ -168,7 +168,7 @@
 /* #undef HAVE_OS2_H */
 
 /* Define to 1 if you have the `random' function. */
-/* #undef HAVE_RANDOM */
+#define HAVE_RANDOM 1
 
 /* Define to 1 if you have the <sched.h> header file. */
 #define HAVE_SCHED_H 1
@@ -231,7 +231,7 @@
 #define HAVE_SYS_SELECT_H 1
 
 /* Define to 1 if you have the <sys/signal.h> header file. */
-/* #undef HAVE_SYS_SIGNAL_H */
+#define HAVE_SYS_SIGNAL_H 1
 
 /* Define to 1 if you have the <sys/socket.h> header file. */
 #define HAVE_SYS_SOCKET_H 1
@@ -274,7 +274,7 @@
 
 /* Define this to the size of native offset type in bits, used for LFS alias
    functions. */
-#define LFS_ALIAS_BITS 32
+#define LFS_ALIAS_BITS 64
 
 /* Define to the extension used for runtime loadable modules, say, ".so". */
 #define LT_MODULE_EXT ".so"
@@ -356,7 +356,7 @@
 #define PACKAGE_NAME "mpg123"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "mpg123 1.25.6"
+#define PACKAGE_STRING "mpg123 1.25.13"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "mpg123"
@@ -365,7 +365,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.25.6"
+#define PACKAGE_VERSION "1.25.13"
 
 /* Define if portaudio v18 API is wanted. */
 /* #undef PORTAUDIO18 */
@@ -374,16 +374,16 @@
 #define SIZEOF_INT32_T 4
 
 /* The size of `long', as computed by sizeof. */
-#define SIZEOF_LONG 4
+#define SIZEOF_LONG 8
 
 /* The size of `off_t', as computed by sizeof. */
-#define SIZEOF_OFF_T 4
+#define SIZEOF_OFF_T 8
 
 /* The size of `size_t', as computed by sizeof. */
-#define SIZEOF_SIZE_T 4
+#define SIZEOF_SIZE_T 8
 
 /* The size of `ssize_t', as computed by sizeof. */
-#define SIZEOF_SSIZE_T 4
+#define SIZEOF_SSIZE_T 8
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
@@ -398,7 +398,7 @@
 /* #undef USE_YASM_FOR_AVX */
 
 /* Version number of package */
-#define VERSION "1.25.6"
+#define VERSION "1.25.13"
 
 /* Define to use Win32 named pipes */
 /* #undef WANT_WIN32_FIFO */

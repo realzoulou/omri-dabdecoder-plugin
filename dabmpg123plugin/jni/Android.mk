@@ -228,7 +228,10 @@ LOCAL_ARM_MODE  := arm
 LOCAL_MODULE    := mpg123plug
 LOCAL_SRC_FILES := mpg123-jni.cpp
 LOCAL_SHARED_LIBRARIES := libmpg123
-//LOCAL_CFLAGS += -O3
+#LOCAL_CFLAGS += -O3
 LOCAL_LDFLAGS += -Wl,--hash-style=both
 LOCAL_LDLIBS := -llog
-include $(BUILD_SHARED_LIBRARY) 
+# address sanitizer
+#LOCAL_CFLAGS += -O1 -g -fsanitize=address -fno-omit-frame-pointer -DANDROID_ARM_MODE=arm -DANDROID_STL=c++_shared
+#LOCAL_LDFLAGS += -g -fsanitize=address
+include $(BUILD_SHARED_LIBRARY)
