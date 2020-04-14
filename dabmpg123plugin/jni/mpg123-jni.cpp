@@ -12,14 +12,15 @@
 static JavaVM * g_vm = NULL;
 static jobject g_obj = NULL;
 static jclass g_decoderClass = NULL;
-static jmethodID g_decoderCallbackMId = NULL;
+static jmethodID g_decoderDataCallbackMId = NULL;
+static jmethodID g_outputFormatChangedCallbackMId = NULL;
 
 static MpgDecoder* g_mpgDecoder = NULL;
 
-const size_t INPBUF_SIZE = 64*1024;
+const size_t INPBUF_SIZE = 32*1024;
 static unsigned char g_mpgInp[INPBUF_SIZE];
 
-const size_t OUTBUF_SIZE = 192*1024;
+const size_t OUTBUF_SIZE = 128*1024;
 static unsigned char g_mpgOut[OUTBUF_SIZE];
 
 const char* MpgDecoder::MPGDECODER_TAG = "MpgDecoder";
@@ -66,6 +67,7 @@ MpgDecoder::MpgDecoder() {
                                 errCode, mpg123_plain_strerror(errCode));
         }
     }
+    __android_log_print(ANDROID_LOG_INFO, MPGDECODER_TAG, "Constructed");
 }
 
 MpgDecoder::~MpgDecoder() {
@@ -81,9 +83,10 @@ MpgDecoder::~MpgDecoder() {
     }
 
 	stop_logger();
+    __android_log_print(ANDROID_LOG_INFO, MPGDECODER_TAG, "Destructed");
 }
 
-size_t MpgDecoder::decode(u_int8_t* audioData, int length) {
+size_t MpgDecoder::decode(u_int8_t* audioData, size_t length) {
     size_t retVal = 0;
     size_t done;
     size_t outc = 0;
@@ -104,8 +107,10 @@ size_t MpgDecoder::decode(u_int8_t* audioData, int length) {
                 m_sampleRateHz = rate;
                 m_channels = channels;
                 m_encoding = enc;
-
-                // TODO inform MPG123Decoder Java class
+                /* Callback with format changed */
+                JNIEnv* env;
+                g_vm->GetEnv ((void **) &env, JNI_VERSION_1_6);
+                env->CallVoidMethod(g_obj, g_outputFormatChangedCallbackMId, rate, channels);
             }
         }
         outc += done;
@@ -121,13 +126,15 @@ size_t MpgDecoder::decode(u_int8_t* audioData, int length) {
             __android_log_print(ANDROID_LOG_WARN, MPGDECODER_TAG, "MPG123_ERR: %s", mpg123_strerror(m_mpg123Decoder));
             retVal = 0;
         } else if (ret == MPG123_NEED_MORE) {
-            /* Callback with decoded data. */
-            JNIEnv* env;
-            g_vm->GetEnv ((void **) &env, JNI_VERSION_1_6);
-            jbyteArray decData = env->NewByteArray(outc);
-            env->SetByteArrayRegion (decData, 0, (int)outc, (jbyte*)g_mpgOut);
-            env->CallVoidMethod(g_obj, g_decoderCallbackMId, decData);
-            env->DeleteLocalRef(decData);
+            if (outc > 0) {
+                /* Callback with decoded data. */
+                JNIEnv *env;
+                g_vm->GetEnv((void **) &env, JNI_VERSION_1_6);
+                jbyteArray decData = env->NewByteArray(outc);
+                env->SetByteArrayRegion(decData, 0, (int) outc, (jbyte *) g_mpgOut);
+                env->CallVoidMethod(g_obj, g_decoderDataCallbackMId, decData, m_sampleRateHz, m_channels);
+                env->DeleteLocalRef(decData);
+            }
             retVal = length;
         }
     }
@@ -242,7 +249,8 @@ extern "C" {
 
 		g_decoderClass = (jclass)env->NewGlobalRef(env->FindClass("de/irt/dabmpg123decoderplugin/Mpg123Decoder"));
         if(g_decoderClass != NULL) {
-			g_decoderCallbackMId = env->GetMethodID(g_decoderClass, "decodedDataCallback", "([B)V");
+			g_decoderDataCallbackMId = env->GetMethodID(g_decoderClass, "decodedDataCallback", "([BII)V");
+			g_outputFormatChangedCallbackMId = env->GetMethodID(g_decoderClass, "outputFormatChangedCallback", "(II)V");
 		} else {
 	    	__android_log_print(ANDROID_LOG_INFO, MpgDecoder::MPGDECODER_TAG, "######### Decoder Class NOT found!!! ########");
 		}
@@ -277,8 +285,14 @@ extern "C" {
             return 0;
 		}
 		if (g_mpgDecoder != NULL) {
-            env->GetByteArrayRegion(audioData, 0, dataLength, reinterpret_cast<jbyte *>(g_mpgInp));
-            return g_mpgDecoder->decode(g_mpgInp, dataLength);
+		    if (audioData != NULL && dataLength > 0) {
+                env->GetByteArrayRegion(audioData, 0, dataLength,
+                                        reinterpret_cast<jbyte *>(g_mpgInp));
+                return g_mpgDecoder->decode(g_mpgInp, (size_t) dataLength);
+            } else {
+                __android_log_print(ANDROID_LOG_ERROR, MpgDecoder::MPGDECODER_TAG, "invalid audio data");
+                return 0;
+		    }
         } else {
             __android_log_print(ANDROID_LOG_ERROR, MpgDecoder::MPGDECODER_TAG, "MpgDecoder null");
             return 0;

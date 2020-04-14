@@ -11,7 +11,7 @@ public:
 	MpgDecoder();
 	~MpgDecoder();
 
-	size_t decode(u_int8_t* audioData, int length);
+	size_t decode(u_int8_t* audioData, size_t length);
 
 	static const char* MPGDECODER_TAG;
 

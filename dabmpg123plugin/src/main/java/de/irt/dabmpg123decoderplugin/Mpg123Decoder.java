@@ -23,15 +23,27 @@ public class Mpg123Decoder extends Service {
         System.loadLibrary("mpg123plug");
     }
 
-    private void decodedDataCallback(byte[] pcmData) {
+    private void decodedDataCallback(byte[] pcmData, int sampleRate, int channelCount) {
         //Log.d(TAG, "Decoded PCM Data: " + pcmData.length);
 
         try {
             if(mCallback != null) {
-                mCallback.decodedPcmData(pcmData);
+                mCallback.decodedAudioData(pcmData, sampleRate, channelCount);
             }
-        } catch(RemoteException remExc) {
-            if(BuildConfig.DEBUG)Log.e(TAG, "RemoteException!");
+        } catch(Exception e) {
+            if(BuildConfig.DEBUG)e.printStackTrace();
+        }
+    }
+
+    private void outputFormatChangedCallback(int sampleRate, int chanCnt) {
+        Log.d(TAG, "format changed: sample rate:" + sampleRate + ", channels:" + chanCnt);
+
+        try {
+            if(mCallback != null) {
+                mCallback.outputFormatChanged(sampleRate, chanCnt);
+            }
+        } catch(Exception e) {
+            if(BuildConfig.DEBUG)e.printStackTrace();
         }
     }
 
