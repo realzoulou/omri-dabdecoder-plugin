@@ -16,44 +16,41 @@ android {
             debuggable false
         }
     }
-
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
         }
     }
-
-    task ndkBuild(type: Exec) {
-        def ndkDir = project.android.ndkDirectory.absolutePath
-        String osName = org.gradle.internal.os.OperatingSystem.current().getName()
-        if (org.gradle.internal.os.OperatingSystem.current().isLinux()) {
-            commandLine "$ndkDir/ndk-build", '-C', file("$projectDir").absolutePath
-        } else if (org.gradle.internal.os.OperatingSystem.current().isUnix()) {
-            //TODO consider UNIX build
-        } else if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
-            commandLine "$ndkDir/ndk-build.cmd", '-C', file("$projectDir").absolutePath
-        } else if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
-            //TODO consider OSX build
-        } else {
-            //unknown OS...Ooops...
+    externalNativeBuild {
+        ndkBuild {
+            path 'jni/Android.mk'
         }
     }
+    packagingOptions {
+        // avoid errors like "More than one file was found with OS independent path 'lib/.../libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
 
-    tasks.withType(JavaCompile) {
-        compileTask -> compileTask.dependsOn ndkBuild
+        pickFirst 'lib/arm64-v8a/libmpg123plug.so'
+        pickFirst 'lib/x86_64/libmpg123plug.so'
+        pickFirst 'lib/x86/libmpg123plug.so'
+        pickFirst 'lib/armeabi-v7a/libmpg123plug.so'
+
+        pickFirst 'lib/arm64-v8a/libmpg123.so'
+        pickFirst 'lib/x86_64/libmpg123.so'
+        pickFirst 'lib/x86/libmpg123.so'
+        pickFirst 'lib/armeabi-v7a/libmpg123.so'
     }
 
-    task cleanNdkBuildObj() {
+    task cleanNdkBuild() {
         doLast {
+            delete(file("$projectDir").absolutePath + '/.cxx')
             delete(file("$projectDir").absolutePath + '/obj')
-        }
-    }
-    task cleanNdkBuildLibs() {
-        doLast {
             delete(file("$projectDir").absolutePath + '/libs')
         }
     }
-
 }
 
 dependencies {
@@ -61,5 +58,4 @@ dependencies {
     api project(path: ':dabaudiodecoderplugininterface')
 }
 
-clean.dependsOn cleanNdkBuildObj
-clean.dependsOn cleanNdkBuildLibs
+clean.dependsOn cleanNdkBuild

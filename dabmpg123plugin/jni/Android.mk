@@ -8,6 +8,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/android \
                     $(LOCAL_PATH)/src \
                     $(LOCAL_PATH)/src/compat \
                     $(LOCAL_PATH)/src/libmpg123 \
+                    $(LOCAL_PATH)/src/libout123
 
 DECODER_CFLAGS_NEON := -DOPT_NEON -DREAL_IS_FLOAT
 

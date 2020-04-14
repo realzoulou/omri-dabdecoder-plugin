@@ -8,7 +8,6 @@ import android.util.Log;
 
 import de.irt.dabaudiodecoderplugininterface.IDabPluginCallback;
 import de.irt.dabaudiodecoderplugininterface.IDabPluginInterface;
-import de.irt.dabmpg123decoderplugin.BuildConfig;
 
 public class Mpg123Decoder extends Service {
 
@@ -18,6 +17,7 @@ public class Mpg123Decoder extends Service {
 
     private native int decode(byte[] audioData, int length);
     private native int init();
+    private native int deinit();
 
     static {
         System.loadLibrary("mpg123plug");
@@ -41,6 +41,14 @@ public class Mpg123Decoder extends Service {
 
 	    if(BuildConfig.DEBUG)Log.d(TAG, "onCreate");
         init();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if(BuildConfig.DEBUG)Log.d(TAG, "onDestroy");
+        deinit();
     }
 
     @Override
