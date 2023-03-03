@@ -1,12 +1,39 @@
 apply plugin: 'com.android.library'
 
+// Allow for project-level definition of certain versions. If such does not exist, use defaults.
+// -- compileSdk
+def dabAudioDecoderPluginCompileSdkVersion
+if (rootProject.hasProperty('compileSdkVersion') && rootProject.ext.compileSdkVersion) {
+    dabAudioDecoderPluginCompileSdkVersion = rootProject.ext.compileSdkVersion
+} else {
+    dabAudioDecoderPluginCompileSdkVersion = 33
+}
+// -- minSdk
+def dabAudioDecoderPluginMinSdkVersion
+if (rootProject.hasProperty('minSdkVersion') && rootProject.ext.minSdkVersion) {
+    dabAudioDecoderPluginMinSdkVersion = rootProject.ext.minSdkVersion
+} else {
+    dabAudioDecoderPluginMinSdkVersion = 23
+}
+// -- targetSdk
+def dabAudioDecoderPluginTargetSdkVersion
+if (rootProject.hasProperty('targetSdkVersion') && rootProject.ext.targetSdkVersion) {
+    dabAudioDecoderPluginTargetSdkVersion = rootProject.ext.targetSdkVersion
+} else {
+    dabAudioDecoderPluginTargetSdkVersion = 31
+}
+println("dabAudioDecoderPluginplugin: targetSdk:" + dabAudioDecoderPluginTargetSdkVersion
+        + ", compileSdk:" + dabAudioDecoderPluginCompileSdkVersion
+        + ", minSdkVersion:" + dabAudioDecoderPluginMinSdkVersion)
+
+
 android {
-    compileSdkVersion 33
+    compileSdkVersion dabAudioDecoderPluginCompileSdkVersion
 
     defaultConfig {
-        minSdkVersion 23
+        minSdkVersion dabAudioDecoderPluginMinSdkVersion
         //noinspection OldTargetApi
-        targetSdkVersion 31
+        targetSdkVersion dabAudioDecoderPluginTargetSdkVersion
         versionCode 1
         versionName "1.0"
     }

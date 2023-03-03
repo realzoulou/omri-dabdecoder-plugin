@@ -1,13 +1,56 @@
 apply plugin: 'com.android.library'
 
+// Allow for project-level definition of certain versions. If such does not exist, use defaults.
+// -- compileSdk
+def dabMpg123CompileSdkVersion
+if (rootProject.hasProperty('compileSdkVersion') && rootProject.ext.compileSdkVersion) {
+    dabMpg123CompileSdkVersion = rootProject.ext.compileSdkVersion
+} else {
+    dabMpg123CompileSdkVersion = 33
+}
+// -- ndk
+def dabMpg123NdkVersion
+if (rootProject.hasProperty('ndkVersion') && rootProject.ext.ndkVersion) {
+    dabMpg123NdkVersion = rootProject.ext.ndkVersion
+} else {
+    dabMpg123NdkVersion = "25.1.8937393"
+}
+// -- NDK clangVersion (must match with what ndk provides!)
+def dabMpg123ClangVersion
+if (rootProject.hasProperty('clangVersion') && rootProject.ext.clangVersion) {
+    dabMpg123ClangVersion = rootProject.ext.clangVersion
+} else {
+    dabMpg123ClangVersion = "14.0.6"
+}
+// -- minSdk
+def dabMpg123MinSdkVersion
+if (rootProject.hasProperty('minSdkVersion') && rootProject.ext.minSdkVersion) {
+    dabMpg123MinSdkVersion = rootProject.ext.minSdkVersion
+} else {
+    dabMpg123MinSdkVersion = 23
+}
+// -- targetSdk
+def dabMpg123TargetSdkVersion
+if (rootProject.hasProperty('targetSdkVersion') && rootProject.ext.targetSdkVersion) {
+    dabMpg123TargetSdkVersion = rootProject.ext.targetSdkVersion
+} else {
+    dabMpg123TargetSdkVersion = 31
+}
+println("dabmpg123plugin: targetSdk:" + dabMpg123TargetSdkVersion
+        + ", compileSdk:" + dabMpg123CompileSdkVersion
+        + ", minSdkVersion:" + dabMpg123MinSdkVersion
+        + ", ndkVersion:" + dabMpg123NdkVersion
+        + ", clangVersion:" + dabMpg123ClangVersion)
+
+
 android {
-    compileSdkVersion 33
-    ndkVersion "25.1.8937393"
+    compileSdkVersion dabMpg123CompileSdkVersion
+    ndkVersion dabMpg123NdkVersion
 
     defaultConfig {
-        minSdkVersion 23
+        minSdkVersion dabMpg123MinSdkVersion
         //noinspection OldTargetApi
-        targetSdkVersion 31
+        targetSdkVersion dabMpg123TargetSdkVersion
         versionCode 1
         versionName "1.0"
     }
