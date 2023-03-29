@@ -29,7 +29,7 @@ println("dabAudioDecoderPluginplugin: targetSdk:" + dabAudioDecoderPluginTargetS
 
 android {
     compileSdkVersion dabAudioDecoderPluginCompileSdkVersion
-
+    namespace 'de.irt.dabaudiodecoderplugininterface'
     defaultConfig {
         minSdkVersion dabAudioDecoderPluginMinSdkVersion
         //noinspection OldTargetApi
@@ -43,6 +43,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             consumerProguardFiles 'proguard-rules.pro'
         }
+    }
+    buildFeatures {
+        aidl true
     }
 }
 

@@ -46,7 +46,7 @@ println("dabmpg123plugin: targetSdk:" + dabMpg123TargetSdkVersion
 android {
     compileSdkVersion dabMpg123CompileSdkVersion
     ndkVersion dabMpg123NdkVersion
-
+    namespace 'de.irt.dabmpg123decoderplugin'
     defaultConfig {
         minSdkVersion dabMpg123MinSdkVersion
         //noinspection OldTargetApi
