@@ -28,7 +28,7 @@ println("dabAudioDecoderPluginplugin: targetSdk:" + dabAudioDecoderPluginTargetS
 
 
 android {
-    compileSdkVersion dabAudioDecoderPluginCompileSdkVersion
+    compileSdk dabAudioDecoderPluginCompileSdkVersion
     namespace 'de.irt.dabaudiodecoderplugininterface'
     defaultConfig {
         minSdkVersion dabAudioDecoderPluginMinSdkVersion

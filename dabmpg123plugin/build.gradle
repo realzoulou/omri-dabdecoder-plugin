@@ -44,7 +44,7 @@ println("dabmpg123plugin: targetSdk:" + dabMpg123TargetSdkVersion
 
 
 android {
-    compileSdkVersion dabMpg123CompileSdkVersion
+    compileSdk dabMpg123CompileSdkVersion
     ndkVersion dabMpg123NdkVersion
     namespace 'de.irt.dabmpg123decoderplugin'
     defaultConfig {
@@ -89,14 +89,6 @@ android {
         pickFirst 'lib/x86/libmpg123.so'
         pickFirst 'lib/armeabi-v7a/libmpg123.so'
     }
-
-    task cleanNdkBuild() {
-        doLast {
-            delete(file("$projectDir").absolutePath + '/.cxx')
-            delete(file("$projectDir").absolutePath + '/obj')
-            delete(file("$projectDir").absolutePath + '/libs')
-        }
-    }
 }
 
 dependencies {
@@ -104,4 +96,11 @@ dependencies {
     api project(path: ':dabaudiodecoderplugininterface')
 }
 
-clean.dependsOn cleanNdkBuild
+tasks.register('cleanNdkBuild') {
+    dependsOn clean
+    doLast {
+        delete(file("$projectDir").absolutePath + '/.cxx')
+        delete(file("$projectDir").absolutePath + '/obj')
+        delete(file("$projectDir").absolutePath + '/libs')
+    }
+}
