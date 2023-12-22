@@ -89,6 +89,9 @@ android {
         pickFirst 'lib/x86/libmpg123.so'
         pickFirst 'lib/armeabi-v7a/libmpg123.so'
     }
+    buildFeatures {
+        buildConfig true
+    }
 }
 
 dependencies {
