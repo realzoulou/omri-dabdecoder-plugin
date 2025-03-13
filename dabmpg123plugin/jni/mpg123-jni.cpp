@@ -143,9 +143,9 @@ size_t MpgDecoder::decode(u_int8_t* audioData, size_t length) {
 
 void logThreadProc(const int fd, const char* tag, std::atomic<bool> * stopThread) {
     pid_t self = pthread_self();
-    char name[13]; // 4 + 8 + '\0'
-    snprintf(name, 12, "MPGLOG-%08x", (int) self);
-    name[12] = '\0';
+    char name[17];
+    snprintf(name, 16, "MPGLOG-%08x", (int) self);
+    name[16] = '\0';
     pthread_setname_np(pthread_self(), name);
 
     __android_log_print(ANDROID_LOG_INFO, MpgDecoder::MPGDECODER_TAG, "mpg123 log thread tag=%s started: %s",
