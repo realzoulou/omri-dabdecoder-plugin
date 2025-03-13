@@ -26,6 +26,11 @@ println("dabAudioDecoderPluginplugin: targetSdk:" + dabAudioDecoderPluginTargetS
         + ", compileSdk:" + dabAudioDecoderPluginCompileSdkVersion
         + ", minSdkVersion:" + dabAudioDecoderPluginMinSdkVersion)
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 android {
     compileSdk dabAudioDecoderPluginCompileSdkVersion

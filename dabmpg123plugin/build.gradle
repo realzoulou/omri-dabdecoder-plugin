@@ -42,7 +42,11 @@ println("dabmpg123plugin: targetSdk:" + dabMpg123TargetSdkVersion
         + ", ndkVersion:" + dabMpg123NdkVersion
         + ", clangVersion:" + dabMpg123ClangVersion)
 
-
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 android {
     compileSdk dabMpg123CompileSdkVersion
     ndkVersion dabMpg123NdkVersion

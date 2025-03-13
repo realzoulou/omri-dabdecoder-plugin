@@ -1,8 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.irt.dabmpg123decoderplugin">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
-        <service android:name="de.irt.dabmpg123decoderplugin.Mpg123Decoder" android:enabled="true" android:exported="true">
+        <service android:name="de.irt.dabmpg123decoderplugin.Mpg123Decoder" android:enabled="true" android:exported="false">
             <intent-filter>
                 <action android:name="de.irt.dabmpg123decoderplugin.Mpg123Decoder" />
                 <category android:name="de.irt.dab.plugin" />
